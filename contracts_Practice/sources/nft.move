@@ -1,26 +1,20 @@
-/// ワークショップ向けの最小構成 NFT コントラクトです。
-/// 学べること:
-/// - オブジェクト（object）ベースの NFT をミントする方法
-/// - エントリ関数でミントした NFT をウォレットへ転送する手順
-/// - Display（表示用メタデータ）の初期化と Publisher の請求方法
-/// 注意: 学習用サンプルのため、権限制御や高度な検証は意図的に最小限です。
+/// ワークショップ向けの練習用穴抜けコードです。
 module nft::nft;
 
 // よく使う標準/フレームワークのモジュールを `use` して短く呼べるようにします。
+// クイズ1：suiフレームワークsui::display;、sui::package;をインポートしてみよう。
 use std::string::String;
-use sui::display;
-use sui::package;
 
-// Display 初期化時の Publisher 請求に使うワンタイムウィットネス。
-// パッケージ publish 時に自動で与えられ、`package::claim` に使います。
+
+
 public struct NFT has drop {}
 
-// ミントされる NFT 本体。
-// - `key` 能力: Sui台帳で「独自のIDを持つオブジェクト」であることを示します。
-// - `store` 能力: 他モジュールへ移動（転送）できるようにします。
-public struct WorkshopNFT has key, store {
+//:NFTオブジェクトの本体を作ってみよう
+//クイズ2:key,store能力を持たせてみよう
+
+public struct WorkshopNFT has {
     id: UID,          // Sui が管理するユニークID（必須）
-    name: String,     // 表示名
+                      // クイズ3:表示名nameを追記してみよう
     description: String, // 説明文
     image_url: String,// 画像URL（IPFSやHTTPSなど）
     creator: address,         // 作成者（ミント時の送信者）
@@ -64,9 +58,6 @@ fun init(witness: NFT, ctx: &mut TxContext) {
     // Publisher を発行者へ返す（保有しておきたいケースが多い）
     transfer::public_transfer(publisher, ctx.sender());
 }
-
-// イベント発行は学習をシンプルにするため削除しました。
-// その代わり、ミント処理の結果はそのままウォレットに転送します。
 
 // ウォレット送信者に NFT をミントするエントリポイント。
 // - 受け取った `name`/`description`/`image_url` を検証してミント
