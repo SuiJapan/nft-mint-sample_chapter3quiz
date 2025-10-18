@@ -58,9 +58,7 @@ fun init(witness: NFT, ctx: &mut TxContext) {
     // ・keys … クライアントが参照するメタデータキー（例: "name", "image_url" など）
     // ・values … その値のテンプレート。`{フィールド名}` で型のフィールドを差し込める。
     //   例: `{name}` → WorkshopNFT.name の中身が表示時に入る。
-    // 【注意】下記の "link" / "{link}" は、構造体に `link` フィールドが無いサンプルのままです。
-    //         実際の運用では、存在しないフィールド名のプレースホルダは空扱い/無視/エラーになる場合があるため、
-    //         フィールド名とテンプレートの対応を合わせるのが安全です（ここでは“学習用”のままにしています）。
+    
     let mut disp = display::new_with_fields<WorkshopNFT>(
         &publisher,
         vector[
