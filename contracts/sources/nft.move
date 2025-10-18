@@ -47,6 +47,7 @@ const EInvalidImageUrlsLength: u64 = 5;
 // ・Sui の initializer は `fun init(...)` を書くだけでよく、特別な属性は不要。
 // ・ここでは Display テンプレートを作り、Publisher/Display をデプロイヤーに渡して
 //   後から表示を更新できるようにしています。
+
 fun init(witness: NFT, ctx: &mut TxContext) {
     // Publisher を取得（Display の登録/更新に必要な権限オブジェクト）。
     // ・`package::claim` は OTW（ここでは `witness: NFT`）を消費して Publisher を1つ作るAPI。
@@ -127,6 +128,7 @@ entry fun mint_bulk(
     // ・`pop_back()` … ベクタ末尾から要素を取り出す（可変長配列の基本操作）。
     // ・ここでは「簡潔さ」を優先して、names/descriptions/image_urls を末尾から取り出しています。
     //   （順序が重要な場合は別途整列/インデックス管理を検討）
+
     quantity.do!(|_| {
         let nft = mint_internal(
             names.pop_back(),
@@ -138,20 +140,6 @@ entry fun mint_bulk(
     })
 }
 
-// メタデータ取得（UI表示などで便利）。
-// 【注意】このままのシグネチャだと &T からフィールドをムーブする形になり実装上は成立しません。
-//         “コードは変えない”条件のため修正はしませんが、実務では以下のいずれかにします：
-//         - 参照を返す：`public fun name(self: &WorkshopNFT): &String` など
-//         - 文字列を複製して返す：`string::clone(&self.name)` を使う（パフォーマンス要検討）
-public fun name(self: &WorkshopNFT): String {
-    self.name
-}
-public fun description(self: &WorkshopNFT): String {
-    self.description
-}
-public fun image_url(self: &WorkshopNFT): String {
-    self.image_url
-}
 
 // 作成者（ミント時の送信者アドレス）。
 // ・`creator` を保持しておくと「誰がミントしたか」を後から辿れる（監査・表示で有用）。
@@ -163,6 +151,7 @@ public fun creator(self: &WorkshopNFT): address {
 // ・入力値を簡単にチェック（名前や画像URLが空は拒否）。
 // ・`object::new(ctx)` で新しいオブジェクトID（UID）を割り当てて WorkshopNFT を構築。
 // ・返り値の NFT はまだ誰の所有にもなっていないので、呼び出し元で transfer して配る。
+
 fun mint_internal(
     name: String,
     description: String,

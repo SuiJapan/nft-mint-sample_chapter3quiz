@@ -95,16 +95,6 @@ entry fun mint_bulk(
     })
 }
 
-// メタデータ取得（UI表示などで便利）。
-public fun name(self: &WorkshopNFT): String {
-    self.name
-}
-public fun description(self: &WorkshopNFT): String {
-    self.description
-}
-public fun image_url(self: &WorkshopNFT): String {
-    self.image_url
-}
 
 // 作成者（ミント時の送信者アドレス）。
 public fun creator(self: &WorkshopNFT): address {
